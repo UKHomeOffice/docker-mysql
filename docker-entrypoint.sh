@@ -106,8 +106,4 @@ if [ "$1" = 'mysqld' ]; then
 	alias mysqld="mysqld  --user=mysql"
 fi
 
-if [ "$1" = 'mysqld-healthcheck' ]; then
-	set -- mysql -uroot
-fi
-
 exec "$@"
