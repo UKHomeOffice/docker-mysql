@@ -24,7 +24,7 @@ Parameters passed to the container will be passed onto `mysqld`
 ```shell
 docker run \
        -e 'MYSQL_ROOT_PASSWORD=my-password' \
-       quay.io/ukhomeofficedigital/mysql:v0.2.0 \
+       quay.io/ukhomeofficedigital/mysql:v0.3.0 \
        -yr --param=eters
 ```
 
@@ -33,14 +33,14 @@ Passing MySQLd will start MySQLd without any parameters.
 ```shell
 docker run \
     -e 'MYSQL_ROOT_PASSWORD=my-password' \
-    quay.io/ukhomeofficedigital/mysql:v0.2.0 \
+    quay.io/ukhomeofficedigital/mysql:v0.3.0 \
     mysqld
 ```
 
 You can also run arbitrary stuff
 
 ```shell
-docker run quay.io/ukhomeofficedigital/mysql:v0.2.0 bash
+docker run quay.io/ukhomeofficedigital/mysql:v0.3.0 bash
 ```
 
 #### Environment Variables
@@ -58,6 +58,9 @@ docker run quay.io/ukhomeofficedigital/mysql:v0.2.0 bash
 
 * `/docker-entrypoint-initdb.d/*.sql` - Any SQL file in that location will be loaded into the 
   database on container init 
+  
+* `/healthcheck.sh` - You can execute this file to check the health of the mysql installation. Its 
+  does `SELECT 1+1` on the database.
 
 ## Contributing
 

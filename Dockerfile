@@ -31,6 +31,7 @@ RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/my.cnf \
 VOLUME /var/lib/mysql
 
 COPY docker-entrypoint.sh /entrypoint.sh
+COPY healthcheck.sh /healthcheck.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 3306

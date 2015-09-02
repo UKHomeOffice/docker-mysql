@@ -104,6 +104,8 @@ if [ "$1" = 'mysqld' ]; then
 	chown -R mysql:mysql "$DATADIR"
 
 	alias mysqld="mysqld  --user=mysql"
+if [ "$1" = 'mysqld-healthcheck' ]; then
+	set -- mysql -uroot
 fi
 
 exec "$@"
