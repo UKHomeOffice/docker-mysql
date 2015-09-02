@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+if [ ! -z "$MYSQL_ROOT_PASSWORD_PATH" ]; then
+    MYSQL_ROOT_PASSWORD="$(cat $MYSQL_ROOT_PASSWORD_PATH)"
+    export MYSQL_ROOT_PASSWORD
+fi
+
+
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
 	set -- mysqld "$@"
@@ -96,6 +102,8 @@ if [ "$1" = 'mysqld' ]; then
 	fi
 
 	chown -R mysql:mysql "$DATADIR"
+
+	alias mysqld="mysqld  --user=mysql"
 fi
 
 exec "$@"
