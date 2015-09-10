@@ -28,7 +28,7 @@ docker run \
        -yr --param=eters
 ```
 
-Passing MySQLd  will start MySQLd without any parameters.  This is also the default behaviour.
+Passing MySQLd  will start MySQLd without any parameters.  
 
 ```shell
 docker run \
