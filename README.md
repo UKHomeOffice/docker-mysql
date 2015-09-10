@@ -28,13 +28,21 @@ docker run \
        -yr --param=eters
 ```
 
-Passing MySQLd will start MySQLd without any parameters.
+Passing MySQLd  will start MySQLd without any parameters.  This is also the default behaviour.
 
 ```shell
 docker run \
     -e 'MYSQL_ROOT_PASSWORD=my-password' \
     quay.io/ukhomeofficedigital/mysql:v0.3.0 \
     mysqld
+```
+
+Starting MySQLd without any parameters is also the default behaviour.
+
+```shell
+docker run \
+    -e 'MYSQL_ROOT_PASSWORD=my-password' \
+    quay.io/ukhomeofficedigital/mysql:v0.3.0 \
 ```
 
 You can also run arbitrary stuff
