@@ -52,7 +52,7 @@ if [ "$1" = 'mysqld' ]; then
 
 		"${mysql[@]}" <<-EOSQL
 			-- What's done in this file shouldn't be replicated
-			--  or products like mysql-fabric won't work
+			--  or products like mysql-fabric will NOT work
 			SET @@SESSION.SQL_LOG_BIN=0;
 
 			DELETE FROM mysql.user ;
@@ -105,5 +105,11 @@ if [ "$1" = 'mysqld' ]; then
 
 	alias mysqld="mysqld  --user=mysql"
 fi
+
+# Allow for no passwords when as root...
+echo "[client]
+user=root
+password=${MYSQL_ROOT_PASSWORD}
+">~/.my.cnf
 
 exec "$@"
