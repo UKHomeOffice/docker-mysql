@@ -24,7 +24,7 @@ Parameters passed to the container will be passed onto `mysqld`
 ```shell
 docker run \
        -e 'MYSQL_ROOT_PASSWORD=my-password' \
-       quay.io/ukhomeofficedigital/mysql:v0.4.0 \
+       quay.io/ukhomeofficedigital/mysql:v0.5.0 \
        -yr --param=eters
 ```
 
@@ -33,7 +33,7 @@ Passing MySQLd  will start MySQLd without any parameters.
 ```shell
 docker run \
     -e 'MYSQL_ROOT_PASSWORD=my-password' \
-    quay.io/ukhomeofficedigital/mysql:v0.4.0 \
+    quay.io/ukhomeofficedigital/mysql:v0.5.0 \
     mysqld
 ```
 
@@ -42,13 +42,13 @@ Starting MySQLd without any parameters is also the default behaviour.
 ```shell
 docker run \
     -e 'MYSQL_ROOT_PASSWORD=my-password' \
-    quay.io/ukhomeofficedigital/mysql:v0.4.0 \
+    quay.io/ukhomeofficedigital/mysql:v0.5.0 \
 ```
 
 You can also run arbitrary stuff
 
 ```shell
-docker run quay.io/ukhomeofficedigital/mysql:v0.4.0 bash
+docker run quay.io/ukhomeofficedigital/mysql:v0.5.0 bash
 ```
 
 #### Environment Variables
