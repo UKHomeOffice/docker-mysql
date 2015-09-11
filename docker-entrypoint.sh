@@ -106,12 +106,14 @@ if [ "$1" = 'mysqld' ]; then
 	alias mysqld="mysqld  --user=mysql"
 fi
 
-# Allow for no passwords when running mysql as root...
+# Allow for no passwords when as root...
 echo "[client]
 user=root
 password=$(cat ${MYSQL_ROOT_PASSWORD})
 ">~/.my.cnf
 
+# Add logging
+touch /var/lib/mysql/${HOSTNAME}.err
 tail -f /var/lib/mysql/${HOSTNAME}.err &
 
 exec "$@"
