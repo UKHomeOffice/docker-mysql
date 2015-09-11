@@ -67,7 +67,7 @@ docker run quay.io/ukhomeofficedigital/mysql:v0.5.0 bash
 * `/docker-entrypoint-initdb.d/*.sql` - Any SQL file in that location will be loaded into the 
   database on container init 
   
-* `/healthcheck.sh` - You can execute this file to check the health of the mysql installation. Its 
+* `/healthcheck.sh` - You can execute this file to check the health of the mysql installation. It 
   does `SELECT 1+1` on the database.
 
 ## Contributing
