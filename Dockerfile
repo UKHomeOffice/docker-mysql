@@ -33,6 +33,6 @@ VOLUME /var/lib/mysql
 COPY docker-entrypoint.sh /entrypoint.sh
 COPY healthcheck.sh /healthcheck.sh
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["mysqld"]
+CMD ["mysqld","--user=mysql"]
 
 EXPOSE 3306
