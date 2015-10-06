@@ -1,5 +1,7 @@
 # Docker MySQL Container
 
+[![Build Status](https://travis-ci.org/UKHomeOffice/docker-mysql.svg?branch=master)](https://travis-ci.org/UKHomeOffice/docker-mysql)
+
 Docker MySQL Container that extends the official home office docker base image.
 
 ## Getting Started
