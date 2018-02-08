@@ -72,6 +72,16 @@ docker run quay.io/ukhomeofficedigital/mysql:v0.5.0 bash
 * `/healthcheck.sh` - You can execute this file to check the health of the mysql installation. It 
   does `SELECT 1+1` on the database.
 
+### Unprivileged container
+
+You can assign a security context to your container to run it without root in a Kubernetes pod:
+ 
+```shell
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 999
+```
+
 ## Contributing
 
 Feel free to submit pull requests and issues. If it's a particualy large PR, you may wish to discuss
