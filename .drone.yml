@@ -1,0 +1,39 @@
+pipeline:
+
+  web_build_image:
+    image: docker:17.07.0-ce
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker build -t mysql:$${DRONE_COMMIT_SHA} .
+    when:
+      event: [push, tag]
+
+  web_latest_image_to_quay:
+    image: docker:17.07.0-ce
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+mysql_robot" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag mysql:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/mysql:$${DRONE_COMMIT_SHA}
+      - docker tag mysql:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/mysql:latest
+      - docker push quay.io/ukhomeofficedigital/mysql:$${DRONE_COMMIT_SHA}
+      - docker push quay.io/ukhomeofficedigital/mysql:latest
+    when:
+      event: push
+      branch: master
+
+  web_tag_image_to_quay:
+    image: docker:17.07.0-ce
+    secrets:
+      - docker_password
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker login -u="ukhomeofficedigital+mysql_robot" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag mysql:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/mysql:$${DRONE_TAG}
+      - docker push quay.io/ukhomeofficedigital/mysql:$${DRONE_TAG}
+    when:
+      event: tag
