@@ -108,7 +108,7 @@ fi
 
 # Allow for no passwords when as root...
 echo "[client]
-user=root
+user=mysql
 password=${MYSQL_ROOT_PASSWORD}
 ">~/.my.cnf
 

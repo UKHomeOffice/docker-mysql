@@ -1,7 +1,10 @@
 FROM ukhomeofficedigital/centos-base
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql && useradd -r -g mysql mysql
+RUN groupadd -r mysql \
+    && useradd -m -g mysql mysql
+
+WORKDIR /home/mysql
 
 RUN mkdir /docker-entrypoint-initdb.d
 
@@ -26,10 +29,13 @@ RUN yum install -y mysql-community-server-$MYSQL_VERSION && yum clean all
 # don't reverse lookup hostnames, they are usually another container
 RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/my.cnf \
 	&& printf "skip-host-cache\nskip-name-resolve\n" | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/my.cnf > /tmp/my.cnf \
-	&& mv /tmp/my.cnf /etc/my.cnf
+	&& mv /tmp/my.cnf /etc/my.cnf \
+        && chown mysql:mysql /etc/my.cnf
 
 VOLUME /var/lib/mysql
-
+RUN chown -R mysql:mysql /var/lib/mysql
+ 
+USER mysql
 COPY docker-entrypoint.sh /entrypoint.sh
 COPY healthcheck.sh /healthcheck.sh
 ENTRYPOINT ["/entrypoint.sh"]
