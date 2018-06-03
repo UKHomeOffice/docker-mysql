@@ -1,9 +1,9 @@
 FROM debian:stretch-slim
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r mysql && useradd -m -g mysql mysql
+RUN groupadd -r mysql && useradd -u 1000 -m -g mysql mysql
 
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends curl gnupg dirmngr && rm -rf /var/lib/apt/lists/*
 
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
@@ -12,8 +12,11 @@ RUN set -x \
 	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+	&& gpg --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 || \
+        gpg --keyserver pgp.mit.edu --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 || \
+        gpg --keyserver keyserver.pgp.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 || \
+        curl https://keybase.io/tianon/pgp_keys.asc?fingerprint=b42f6819007f00f88e364fd4036a9c25bf357dd4 | gpg --import ; \
+	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
 	&& gosu nobody true \
@@ -38,13 +41,15 @@ RUN set -ex; \
 # gpg: key 5072E1F5: public key "MySQL Release Engineering <mysql-build@oss.oracle.com>" imported
 	key='A4A9406876FCBD3C456770C88C718D3B5072E1F5'; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+	gpg --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys "$key" || \
+        gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
+        gpg --keyserver keyserver.pgp.com --recv-keys "$key" ; \
 	gpg --export "$key" > /etc/apt/trusted.gpg.d/mysql.gpg; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list > /dev/null
 
 ENV MYSQL_MAJOR 5.7
-ENV MYSQL_VERSION 5.7.21-1debian9
+ENV MYSQL_VERSION 5.7.22-1debian9
 
 RUN echo "deb http://repo.mysql.com/apt/debian/ stretch mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
 
@@ -72,7 +77,7 @@ VOLUME /var/lib/mysql
 RUN chown -R mysql:mysql /var/lib/mysql
 
 # Config files
-USER mysql
+USER 1000
 WORKDIR /etc/mysql
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
