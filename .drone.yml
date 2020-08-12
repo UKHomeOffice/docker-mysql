@@ -1,7 +1,7 @@
 pipeline:
 
   web_build_image:
-    image: docker:17.07.0-ce
+    image: docker:19.03.5
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
@@ -10,7 +10,7 @@ pipeline:
       event: [push, tag]
 
   web_latest_image_to_quay:
-    image: docker:17.07.0-ce
+    image: docker:19.03.5
     secrets:
       - docker_password
     environment:
@@ -26,7 +26,7 @@ pipeline:
       branch: master
 
   web_tag_image_to_quay:
-    image: docker:17.07.0-ce
+    image: docker:19.03.5
     secrets:
       - docker_password
     environment:
